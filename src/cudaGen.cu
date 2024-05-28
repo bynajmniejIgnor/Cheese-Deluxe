@@ -26,12 +26,10 @@ int cuda::generate() {
     int threadsPerBlock = 256;
     int blocksPerGrid = (maxNumber + threadsPerBlock - 1) / threadsPerBlock;
 
-
     auto start = std::chrono::high_resolution_clock::now();
 
     countBinary<<<blocksPerGrid, threadsPerBlock>>>(n, d_results);
     cudaDeviceSynchronize();
-
     cudaMemcpy(bitsets.data(), d_results, maxNumber * sizeof(std::bitset<BITSET_SIZE>), cudaMemcpyDeviceToHost);
 
     auto end = std::chrono::high_resolution_clock::now();
