@@ -16,15 +16,15 @@ namespace cheese
     void CheeseNode::info()
     {
         std::cout << "Node raport:" << std::endl;
-        std::cout << "Index: " << index << std::endl;
+        std::cout << "Index: " << this -> index << std::endl;
         std::cout << "Connections: ";
-        for (const auto &conn : connections) {
+        for (const auto &conn : this -> connections) {
             std::cout << conn << ", ";
         }
 
         std::cout << std::endl;
-        std::cout << "Location: " << location[0] << ", " << location[1] << ", " << location[2] << std::endl;
-        std::cout << "Not removeable: " << not_removable << std::endl;
+        std::cout << "Location: " << this -> location[0] << ", " << this -> location[1] << ", " << this -> location[2] << std::endl;
+        std::cout << "Not removeable: " << this -> not_removable << std::endl;
     }
 
     void test()
