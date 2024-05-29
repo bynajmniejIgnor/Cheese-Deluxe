@@ -5,7 +5,7 @@ namespace cheeseOps {
         auto keeper = std::make_shared<CheeseKeeper>();
 
         int c = 0;
-       for (int h=0; h<cheese->height; h++) {
+        for (int h=0; h<cheese->height; h++) {
            for (int x=0; x<cheese->length; x++) {
                 keeper->wallBounds[LEFT].push_back(c);
                 keeper->wallBounds[RIGHT].push_back(c+cheese->width-1);
@@ -25,7 +25,7 @@ namespace cheeseOps {
         return keeper;
     }
 
-    bool CheeseKeeper::verify(std::shared_ptr<cheese::Cheese> cheese) {
+    bool CheeseKeeper::verifyCheese(std::shared_ptr<cheese::Cheese> cheese) {
         std::array<bool, 6> checkMarks;
         checkMarks.fill(false);
         int checkPointer = 0;
@@ -52,6 +52,45 @@ namespace cheeseOps {
         }
 
         std::cout<<"The walls of this piece of cheese stand strong!"<<std::endl;
+        return true;
+    }
+
+    int CheeseKeeper::getConnectedCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball, int avoidIdx) {
+        for (int conn : cheeseball->connections) {
+            if (conn != cheeseball->index /*this condition is a sanity check, shouldn't happen*/ && conn != avoidIdx) return conn;
+        }
+        return -1;
+    }
+
+    bool CheeseKeeper::condition1(std::shared_ptr<cheese::CheeseBall> cheeseball, size_t C1) {
+        return cheeseball->connections.size() >= C1;
+    }
+
+    bool CheeseKeeper::condition2(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C2) {
+        if (cheeseball->connections.size()==1) {
+            int hook = this->getConnectedCheeseBall(cheeseball, -1);
+            if (hook != -1) return cheese->cheeseBalls[hook]->connections.size()-1 >= C2;
+        }
+        return false;
+    }
+
+    bool CheeseKeeper::condition3(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C3) {
+        if(cheeseball->connections.size() == 2) {
+            int hook = this->getConnectedCheeseBall(cheeseball, -1);
+            int other_hook = this->getConnectedCheeseBall(cheeseball, hook);
+            return cheese->cheeseBalls[hook]->connections.size()-1 >= C3 || cheese->cheeseBalls[other_hook]->connections.size()-1 >= C3;
+        }
+        return false;
+    }
+
+    bool CheeseKeeper::validateCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C1, size_t C2, size_t C3){
+        if(!this->condition1(cheeseball, C1)) {
+            if(!this->condition2(cheeseball, cheese, C2)) {
+                if(!this->condition3(cheeseball, cheese, C3)) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 }
