@@ -11,12 +11,12 @@ namespace cheese {
         int index;
         std::vector<int> connections;
         std::array<int, 3> location;
-        bool not_removable;
+        bool visited;
 
         void info();
     } CheeseBall;
 
-    std::shared_ptr<CheeseBall> MakeCheeseNode(int idx, std::vector<int> connections, std::array<int, 3> location, bool not_rebovable);
+    std::shared_ptr<CheeseBall> MakeCheeseNode(int idx, std::vector<int> connections, std::array<int, 3> location);
 
     typedef struct {
         std::vector<std::shared_ptr<CheeseBall>> cheeseBalls;

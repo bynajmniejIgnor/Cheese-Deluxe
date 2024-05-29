@@ -2,12 +2,12 @@
 
 namespace cheese
 {
-    std::shared_ptr<CheeseBall> MakeCheeseBall(int idx, std::vector<int> connections, std::array<int, 3> location, bool not_rebovable) {
+    std::shared_ptr<CheeseBall> MakeCheeseBall(int idx, std::vector<int> connections, std::array<int, 3> location) {
         auto particle = std::make_shared<CheeseBall>();
         particle->index = idx;
         particle->connections = connections;
         particle->location = location;
-        particle->not_removable = not_rebovable;
+        particle->visited = false;
 
         return particle;
     }
@@ -21,7 +21,7 @@ namespace cheese
 
         std::cout << std::endl;
         std::cout << "Location: " << this->location[0] << ", " << this->location[1] << ", " << this->location[2] << std::endl;
-        std::cout << "Not removeable: " << this->not_removable << std::endl;
+        std::cout << "Visited: " << this->visited << std::endl;
     }
 
     std::shared_ptr<Cheese> MakeCheese(int width, int length, int height) {
@@ -39,7 +39,7 @@ namespace cheese
         int w, l, h = 0;
         for (int i = 0; i < totalBalls; i++) {
             location = {w, l, h};
-            cheeseBalls.push_back(MakeCheeseBall(i, connections, location, false));
+            cheeseBalls.push_back(MakeCheeseBall(i, connections, location));
             w += 1;
             if (w == width) {
                 l += 1;

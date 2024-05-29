@@ -25,7 +25,7 @@ namespace cheeseOps {
         return keeper;
     }
 
-    bool CheeseKeeper::verifyCheese(std::shared_ptr<cheese::Cheese> cheese) {
+    bool CheeseKeeper::verifyCheese(std::shared_ptr<cheese::Cheese> cheese) { //Checks for mandatory wall cheeseballs and connectivity (graph theory)
         std::array<bool, 6> checkMarks;
         checkMarks.fill(false);
         int checkPointer = 0;
@@ -51,7 +51,12 @@ namespace cheeseOps {
             }       
         }
 
-        std::cout<<"The walls of this piece of cheese stand strong!"<<std::endl;
+        if(!this->connectivityCheck(cheese)) {
+            std::cout<<"This cheese is not a connected graph :(("<<std::endl;
+            return false;
+        }
+
+        std::cout<<"The walls and connectivity of this piece of cheese stand strong!"<<std::endl;
         return true;
     }
 
@@ -93,4 +98,29 @@ namespace cheeseOps {
         }
         return true;
     }
+
+
+    void CheeseKeeper::dfs(std::shared_ptr<cheese::Cheese> cheese, int current) {
+        cheese->cheeseBalls[current]->visited = true;
+        for (int conn : cheese->cheeseBalls[current]->connections) {
+            if (!cheese->cheeseBalls[conn]->visited) this->dfs(cheese, conn);
+        }
+    }
+
+    bool CheeseKeeper::connectivityCheck(std::shared_ptr<cheese::Cheese> cheese) {
+        for (const auto &cheeseball: cheese->cheeseBalls) {
+            if (cheeseball->index != -1) {
+                this->dfs(cheese, cheeseball->index);
+                break;
+            }
+        }
+       
+       for (const auto &cheeseball: cheese->cheeseBalls) {
+            if (cheeseball->visited == false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

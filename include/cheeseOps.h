@@ -12,6 +12,9 @@
 namespace cheeseOps {
     typedef struct {
         std::array<std::vector<int>, 6> wallBounds; //[left, right, top, down, back, front]
+        
+        void dfs(std::shared_ptr<cheese::Cheese> cheese, int current);
+        bool connectivityCheck(std::shared_ptr<cheese::Cheese> cheese);
         bool verifyCheese(std::shared_ptr<cheese::Cheese> cheese);
         bool validateCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C1, size_t C2, size_t C3);
         int getConnectedCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball, int avoidIdx);
