@@ -1,6 +1,7 @@
 #ifndef CHEESEOPS_H
 #define CHEESEOPS_H
 #include "cheese.h"
+#include "cudaGen.h"
 
 #define LEFT 0
 #define RIGHT 1
@@ -22,7 +23,9 @@ namespace cheeseOps {
         bool condition2(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C2);
         bool condition3(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C3);
 
-    }CheeseKeeper;
+        void obliterateCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball);
+        void carveTheCheese(std::shared_ptr<cheese::Cheese> cheese, std::bitset<BITSET_SIZE> mask);
+    } CheeseKeeper;
 
     std::shared_ptr<CheeseKeeper> EducateCheeseKeeper(std::shared_ptr<cheese::Cheese> cheese);
 }

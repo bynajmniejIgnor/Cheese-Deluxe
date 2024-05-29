@@ -123,4 +123,14 @@ namespace cheeseOps {
         return true;
     }
 
+    void CheeseKeeper::obliterateCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball){
+        cheeseball->index = -1;
+        // :))
+    }
+
+    void CheeseKeeper::carveTheCheese(std::shared_ptr<cheese::Cheese> cheese, std::bitset<BITSET_SIZE> mask) {
+        for (size_t i=0; i<mask.size(); i++) {
+            if (!mask[i]) this->obliterateCheeseBall(cheese->cheeseBalls[i]);
+        }
+    }
 }

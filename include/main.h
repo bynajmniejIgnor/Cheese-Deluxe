@@ -7,6 +7,6 @@
 #include <chrono>
 #include <bitset>
 
-#define BITSET_SIZE 64
+#define BITSET_SIZE 32
 
 #endif
