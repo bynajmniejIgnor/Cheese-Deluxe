@@ -2,7 +2,7 @@
 
 namespace cheese
 {
-    std::shared_ptr<CheeseNode> MakeCheeseNode(int idx, std::vector<int> &connections, std::array<int, 3> location, bool not_rebovable) {
+    std::shared_ptr<CheeseNode> MakeCheeseNode(int idx, std::vector<int> connections, std::array<int, 3> location, bool not_rebovable) {
         auto particle = std::make_shared<CheeseNode>();
         particle->index = idx;
         particle->connections = connections;
@@ -24,23 +24,12 @@ namespace cheese
         std::cout << "Not removeable: " << this->not_removable << std::endl;
     }
 
-    void test() {
-        std::vector<int> connections;
-
-        connections.push_back(13);
-        connections.push_back(14);
-        connections.push_back(15);
-        std::array<int, 3> location{1, 2, 3};
-
-        std::shared_ptr<CheeseNode> bit = MakeCheeseNode(1, connections, location, false);
-        bit->info();
-    }
-
     std::shared_ptr<Cheese> MakeCheese(int width, int length, int height) {
         auto cheese = std::make_shared<Cheese>();
-        cheese -> width = width;
-        cheese -> length = length;
-        cheese -> height = height; 
+        cheese->width = width;
+        cheese->length = length;
+        cheese->height = height; 
+        cheese->sliceArea = width * length;
 
         std::vector<std::shared_ptr<CheeseNode>> cheeseBalls;
         std::vector<int> connections;
@@ -63,14 +52,67 @@ namespace cheese
             }
         }
 
-        cheese -> cheeseNodes = cheeseBalls;
+        cheese->cheeseNodes = cheeseBalls;
         return cheese;
     }
 
     void Cheese::info() {
         for (const auto &node: this -> cheeseNodes) {
-            node -> info();
+            node->info();
             std::cout << std::endl;
+        }
+    }
+
+    void Cheese::bindSlices() { // Joins nodes in the same height layer
+        for (int l = 0; l < this->length-1; l++) {
+            for (int w = 0; w < this->width; w++) {
+                this->cheeseNodes[l * this->width + w]->connections.push_back((l+1) * this->width + w);
+                std::cout << "Connected "<<l * this->width + w<<" with "<<(l+1) * this->width + w<<std::endl;
+            }
+        }
+
+        int c = 0;
+        for (int i = 0; i < this->sliceArea-1; i++) {
+            if (c == this->width-1) {
+                c = 0;
+                continue;
+            }
+            this->cheeseNodes[i]->connections.push_back(i+1);
+            std::cout << "Connected "<<i<<" with "<<i+1<<std::endl;
+            c++;
+        }
+    }
+
+    void Cheese::stackSlices() {
+        for (int h = 0; h < this->height; h ++) {
+            for (int i = 0; i < this->sliceArea; i++ ) {
+                for (int c = 0; c < i + this->sliceArea * (h - 1); c ++){
+                    this->cheeseNodes[i + this->sliceArea * h]->connections.push_back(c + this->sliceArea);
+                }
+            }
+        }
+    }
+
+    void Cheese::solidifyCheese() {
+        for (int h = 0; h < this->height-1; h++) {
+            for (int i = 0; i < this->sliceArea; i++) {
+                this->cheeseNodes[i + sliceArea * h]->connections.push_back(i + this->sliceArea * (h+1));
+            }
+        }
+    }
+
+    void Cheese::ageTheCheese() {
+        for (const auto &node: this->cheeseNodes) {
+            for (int i = 0; i < node->connections.size(); i++) {
+                bool found = false;
+                for (const auto &c: this->cheeseNodes[i]->connections) {
+                    if (node->index == c) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) this->cheeseNodes[i]->connections.push_back(node->index);
+            }
         }
     }
 }
