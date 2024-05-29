@@ -30,7 +30,7 @@ namespace cheeseOps {
         checkMarks.fill(false);
         int checkPointer = 0;
 
-        for (const auto &node: cheese->cheeseNodes) {
+        for (const auto &node: cheese->cheeseBalls) {
             if(checkPointer>=5) break;
             for (size_t wall = 0; wall < this->wallBounds.size(); wall++) {
                 if (checkMarks[wall]) continue;

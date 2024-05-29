@@ -2,8 +2,8 @@
 
 namespace cheese
 {
-    std::shared_ptr<CheeseNode> MakeCheeseNode(int idx, std::vector<int> connections, std::array<int, 3> location, bool not_rebovable) {
-        auto particle = std::make_shared<CheeseNode>();
+    std::shared_ptr<CheeseBall> MakeCheeseBall(int idx, std::vector<int> connections, std::array<int, 3> location, bool not_rebovable) {
+        auto particle = std::make_shared<CheeseBall>();
         particle->index = idx;
         particle->connections = connections;
         particle->location = location;
@@ -12,7 +12,7 @@ namespace cheese
         return particle;
     }
 
-    void CheeseNode::info() {
+    void CheeseBall::info() {
         std::cout << "Index: " << this->index << std::endl;
         std::cout << "Connections: ";
         for (const auto &conn : this->connections) {
@@ -31,15 +31,15 @@ namespace cheese
         cheese->height = height; 
         cheese->sliceArea = width * length;
 
-        std::vector<std::shared_ptr<CheeseNode>> cheeseBalls;
+        std::vector<std::shared_ptr<CheeseBall>> cheeseBalls;
         std::vector<int> connections;
         std::array<int, 3> location;
-        int totalNodes = width * length * height;
+        int totalBalls = width * length * height;
 
         int w, l, h = 0;
-        for (int i = 0; i < totalNodes; i++) {
+        for (int i = 0; i < totalBalls; i++) {
             location = {w, l, h};
-            cheeseBalls.push_back(MakeCheeseNode(i, connections, location, false));
+            cheeseBalls.push_back(MakeCheeseBall(i, connections, location, false));
             w += 1;
             if (w == width) {
                 l += 1;
@@ -52,7 +52,7 @@ namespace cheese
             }
         }
 
-        cheese->cheeseNodes = cheeseBalls;
+        cheese->cheeseBalls = cheeseBalls;
         cheese->bindSlices();
         cheese->stackSlices();
         cheese->solidifyCheese();
@@ -62,7 +62,7 @@ namespace cheese
     }
 
     void Cheese::info() {
-        for (const auto &node: this -> cheeseNodes) {
+        for (const auto &node: this -> cheeseBalls) {
             node->info();
             std::cout << std::endl;
         }
@@ -71,7 +71,7 @@ namespace cheese
     void Cheese::bindSlices() { 
         for (int l = 0; l < this->length-1; l++) {
             for (int w = 0; w < this->width; w++) {
-                this->cheeseNodes[l * this->width + w]->connections.push_back((l+1) * this->width + w);
+                this->cheeseBalls[l * this->width + w]->connections.push_back((l+1) * this->width + w);
             }
         }
 
@@ -81,7 +81,7 @@ namespace cheese
                 c = 0;
                 continue;
             }
-            this->cheeseNodes[i]->connections.push_back(i+1);
+            this->cheeseBalls[i]->connections.push_back(i+1);
             c++;
         }
     }
@@ -90,7 +90,7 @@ namespace cheese
         for (int h = 0; h < this->height; h ++) {
             for (int i = 0; i < this->sliceArea; i++ ) {
                 for (int c = 0; c < i + this->sliceArea * (h - 1); c ++){
-                    this->cheeseNodes[i + this->sliceArea * h]->connections.push_back(c + this->sliceArea);
+                    this->cheeseBalls[i + this->sliceArea * h]->connections.push_back(c + this->sliceArea);
                 }
             }
         }
@@ -99,7 +99,7 @@ namespace cheese
     void Cheese::solidifyCheese() {
         for (int h = 0; h < this->height-1; h++) {
             for (int i = 0; i < this->sliceArea; i++) {
-                this->cheeseNodes[i + sliceArea * h]->connections.push_back(i + this->sliceArea * (h+1));
+                this->cheeseBalls[i + sliceArea * h]->connections.push_back(i + this->sliceArea * (h+1));
             }
         }
     }
@@ -115,10 +115,10 @@ namespace cheese
     }
 
     void Cheese::ageTheCheese() {
-        for (const auto &node: this->cheeseNodes) {
+        for (const auto &node: this->cheeseBalls) {
            for (const auto &conn: node->connections) {
-                if (isNotInVector(this->cheeseNodes[conn]->connections, node->index)) {
-                    this->cheeseNodes[conn]->connections.push_back(node->index);
+                if (isNotInVector(this->cheeseBalls[conn]->connections, node->index)) {
+                    this->cheeseBalls[conn]->connections.push_back(node->index);
                 }
            } 
         }

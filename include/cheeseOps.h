@@ -13,6 +13,7 @@ namespace cheeseOps {
     typedef struct {
         std::array<std::vector<int>, 6> wallBounds; //[left, right, top, down, back, front]
         bool verify(std::shared_ptr<cheese::Cheese> cheese);
+        int getConnectedCheeseBall();
     }CheeseKeeper;
 
     std::shared_ptr<CheeseKeeper> EducateCheeseKeeper(std::shared_ptr<cheese::Cheese> cheese);
