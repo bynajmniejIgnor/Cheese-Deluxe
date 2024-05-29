@@ -31,7 +31,7 @@ namespace cheeseOps {
         int checkPointer = 0;
 
         for (const auto &node: cheese->cheeseBalls) {
-            if(checkPointer>=5) break;
+            if(checkPointer==6) break;
             for (size_t wall = 0; wall < this->wallBounds.size(); wall++) {
                 if (checkMarks[wall]) continue;
                 for (const auto &num : wallBounds[wall]) {
@@ -44,9 +44,9 @@ namespace cheeseOps {
             }
         }
 
-        for (bool check : checkMarks) {
-            if (!check) {
-                std::cout<<"This cheese has failed at least one wall"<<std::endl;
+        for (size_t check=0; check<checkMarks.size(); check++) {
+            if (!checkMarks[check]) {
+                std::cout<<"This cheese has failed at least one wall condition ("<<check<<")"<<std::endl;
                 return false;
             }       
         }
