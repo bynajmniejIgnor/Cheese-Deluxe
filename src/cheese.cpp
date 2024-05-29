@@ -64,6 +64,7 @@ namespace cheese
     }
 
     void Cheese::bindSlices() { // Joins nodes in the same height layer
+        std::cout << "Binding slices" <<std::endl;
         for (int l = 0; l < this->length-1; l++) {
             for (int w = 0; w < this->width; w++) {
                 this->cheeseNodes[l * this->width + w]->connections.push_back((l+1) * this->width + w);
@@ -84,35 +85,45 @@ namespace cheese
     }
 
     void Cheese::stackSlices() {
+        std::cout << "Stacking slices" <<std::endl;
         for (int h = 0; h < this->height; h ++) {
             for (int i = 0; i < this->sliceArea; i++ ) {
                 for (int c = 0; c < i + this->sliceArea * (h - 1); c ++){
                     this->cheeseNodes[i + this->sliceArea * h]->connections.push_back(c + this->sliceArea);
+                    std::cout << "Connected "<<i + this->sliceArea * h<<" with "<<c + this->sliceArea<<std::endl;
                 }
             }
         }
     }
 
     void Cheese::solidifyCheese() {
+        std::cout << "Solidifying cheese" <<std::endl;
         for (int h = 0; h < this->height-1; h++) {
             for (int i = 0; i < this->sliceArea; i++) {
                 this->cheeseNodes[i + sliceArea * h]->connections.push_back(i + this->sliceArea * (h+1));
+                    std::cout << "Connected "<<i + this->sliceArea * h<<" with "<<i + this->sliceArea * (h+1)<<std::endl;
             }
         }
     }
 
-    void Cheese::ageTheCheese() {
-        for (const auto &node: this->cheeseNodes) {
-            for (int i = 0; i < node->connections.size(); i++) {
-                bool found = false;
-                for (const auto &c: this->cheeseNodes[i]->connections) {
-                    if (node->index == c) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) this->cheeseNodes[i]->connections.push_back(node->index);
+
+    bool isNotInVector(const std::vector<int>& vec, int value) {
+        for (int num : vec) {
+            if (num == value) {
+                return false;
             }
+        }
+        return true;
+    }
+
+    void Cheese::ageTheCheese() {
+        std::cout << "Aging cheese" <<std::endl;
+        for (const auto &node: this->cheeseNodes) {
+           for (const auto &conn: node->connections) {
+                if (isNotInVector(this->cheeseNodes[conn]->connections, node->index)) {
+                    this->cheeseNodes[conn]->connections.push_back(node->index);
+                }
+           } 
         }
     }
 }
