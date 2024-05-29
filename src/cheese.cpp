@@ -53,6 +53,11 @@ namespace cheese
         }
 
         cheese->cheeseNodes = cheeseBalls;
+        cheese->bindSlices();
+        cheese->stackSlices();
+        cheese->solidifyCheese();
+        cheese->ageTheCheese();
+
         return cheese;
     }
 
@@ -64,11 +69,9 @@ namespace cheese
     }
 
     void Cheese::bindSlices() { // Joins nodes in the same height layer
-        std::cout << "Binding slices" <<std::endl;
         for (int l = 0; l < this->length-1; l++) {
             for (int w = 0; w < this->width; w++) {
                 this->cheeseNodes[l * this->width + w]->connections.push_back((l+1) * this->width + w);
-                std::cout << "Connected "<<l * this->width + w<<" with "<<(l+1) * this->width + w<<std::endl;
             }
         }
 
@@ -79,29 +82,24 @@ namespace cheese
                 continue;
             }
             this->cheeseNodes[i]->connections.push_back(i+1);
-            std::cout << "Connected "<<i<<" with "<<i+1<<std::endl;
             c++;
         }
     }
 
     void Cheese::stackSlices() {
-        std::cout << "Stacking slices" <<std::endl;
         for (int h = 0; h < this->height; h ++) {
             for (int i = 0; i < this->sliceArea; i++ ) {
                 for (int c = 0; c < i + this->sliceArea * (h - 1); c ++){
                     this->cheeseNodes[i + this->sliceArea * h]->connections.push_back(c + this->sliceArea);
-                    std::cout << "Connected "<<i + this->sliceArea * h<<" with "<<c + this->sliceArea<<std::endl;
                 }
             }
         }
     }
 
     void Cheese::solidifyCheese() {
-        std::cout << "Solidifying cheese" <<std::endl;
         for (int h = 0; h < this->height-1; h++) {
             for (int i = 0; i < this->sliceArea; i++) {
                 this->cheeseNodes[i + sliceArea * h]->connections.push_back(i + this->sliceArea * (h+1));
-                    std::cout << "Connected "<<i + this->sliceArea * h<<" with "<<i + this->sliceArea * (h+1)<<std::endl;
             }
         }
     }
@@ -117,7 +115,6 @@ namespace cheese
     }
 
     void Cheese::ageTheCheese() {
-        std::cout << "Aging cheese" <<std::endl;
         for (const auto &node: this->cheeseNodes) {
            for (const auto &conn: node->connections) {
                 if (isNotInVector(this->cheeseNodes[conn]->connections, node->index)) {
