@@ -3,5 +3,7 @@
 
 int main(){
     //cuda::generate();
-    cheese::test();
+   std::shared_ptr<cheese::Cheese> cheese = cheese::MakeCheese(2,2,1);
+
+   cheese -> info();
 }
