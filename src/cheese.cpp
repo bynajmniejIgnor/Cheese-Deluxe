@@ -68,7 +68,7 @@ namespace cheese
         }
     }
 
-    void Cheese::bindSlices() { // Joins nodes in the same height layer
+    void Cheese::bindSlices() { 
         for (int l = 0; l < this->length-1; l++) {
             for (int w = 0; w < this->width; w++) {
                 this->cheeseNodes[l * this->width + w]->connections.push_back((l+1) * this->width + w);
