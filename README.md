@@ -6,5 +6,5 @@ A marvelous piece of cheese with which you shall discover a brand new experience
 
 ### How to run
 ```bash
-$ nvcc -I./include src/* --expt-relaxed-constexpr && ./a.out
+$ nvcc -I./include src/* --expt-relaxed-constexpr -Xcompiler -fopenmp && ./a.out 
 ```
