@@ -13,10 +13,10 @@ namespace cheese {
         void info();
     } CheeseBall;
 
-    std::shared_ptr<CheeseBall> MakeCheeseNode(int idx, std::vector<int> connections, std::array<int, 3> location);
+    CheeseBall MakeCheeseNode(int idx, std::vector<int> connections, std::array<int, 3> location);
 
     typedef struct {
-        std::vector<std::shared_ptr<CheeseBall>> cheeseBalls;
+        std::vector<CheeseBall> cheeseBalls;
         int width;
         int length;
         int height;

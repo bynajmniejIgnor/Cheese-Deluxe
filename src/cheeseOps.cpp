@@ -25,17 +25,17 @@ namespace cheeseOps {
         return keeper;
     }
 
-    bool CheeseKeeper::verifyCheese(std::shared_ptr<cheese::Cheese> cheese) { //Checks for mandatory wall cheeseballs and connectivity (graph theory)
+    bool CheeseKeeper::verifyCheese(cheese::Cheese &cheese, size_t C1, size_t C2, size_t C3, bool verbose) { //Checks for mandatory wall cheeseballs and connectivity (graph theory)
         std::array<bool, 6> checkMarks;
         checkMarks.fill(false);
         int checkPointer = 0;
 
-        for (const auto &node: cheese->cheeseBalls) {
+        for (const auto &node: cheese.cheeseBalls) {
             if(checkPointer==6) break;
             for (size_t wall = 0; wall < this->wallBounds.size(); wall++) {
                 if (checkMarks[wall]) continue;
                 for (const auto &num : wallBounds[wall]) {
-                    if (node->index == num) {
+                    if (node.index == num) {
                         checkMarks[wall] = true;
                         checkPointer++;
                         break;
@@ -52,17 +52,24 @@ namespace cheeseOps {
         }
 
         if(!this->connectivityCheck(cheese)) {
-            std::cout<<"This cheese is not a connected graph :(("<<std::endl;
+            if (verbose) std::cout<<"This cheese is not a connected graph :(("<<std::endl;
             return false;
         }
 
-        std::cout<<"The walls and connectivity of this piece of cheese stand strong!"<<std::endl;
+        for (const auto &cheeseball: cheese.cheeseBalls) {
+            if (!this->validateCheeseBall(std::make_shared<cheese::CheeseBall>(cheeseball), std::make_shared<cheese::Cheese>(cheese), C1, C2, C3)) {
+                if (verbose) std::cout<<"This cheese is about to collapse!"<<std::endl;
+                return false;
+            }
+        }
+
+        if (verbose) std::cout<<"The walls and connectivity of this piece of cheese stand strong!"<<std::endl;
         return true;
     }
 
     int CheeseKeeper::getConnectedCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball, int avoidIdx) {
         for (int conn : cheeseball->connections) {
-            if (conn != cheeseball->index /*this condition is a sanity check, shouldn't happen*/ && conn != avoidIdx) return conn;
+            if (conn != cheeseball->index /*this condition is a sanity check, shouldn't happen*/ && conn != avoidIdx && conn != -1) return conn;
         }
         return -1;
     }
@@ -74,7 +81,7 @@ namespace cheeseOps {
     bool CheeseKeeper::condition2(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C2) {
         if (cheeseball->connections.size()==1) {
             int hook = this->getConnectedCheeseBall(cheeseball, -1);
-            if (hook != -1) return cheese->cheeseBalls[hook]->connections.size()-1 >= C2;
+            if (hook != -1) return cheese->cheeseBalls[hook].connections.size()-1 >= C2;
         }
         return false;
     }
@@ -83,7 +90,7 @@ namespace cheeseOps {
         if(cheeseball->connections.size() == 2) {
             int hook = this->getConnectedCheeseBall(cheeseball, -1);
             int other_hook = this->getConnectedCheeseBall(cheeseball, hook);
-            return cheese->cheeseBalls[hook]->connections.size()-1 >= C3 || cheese->cheeseBalls[other_hook]->connections.size()-1 >= C3;
+            return cheese->cheeseBalls[hook].connections.size()-1 >= C3 || cheese->cheeseBalls[other_hook].connections.size()-1 >= C3;
         }
         return false;
     }
@@ -99,41 +106,40 @@ namespace cheeseOps {
         return true;
     }
 
-
-    void CheeseKeeper::dfs(std::shared_ptr<cheese::Cheese> cheese, int current) {
-        cheese->cheeseBalls[current]->visited = true;
-        for (int conn : cheese->cheeseBalls[current]->connections) {
-            if (!cheese->cheeseBalls[conn]->visited) this->dfs(cheese, conn);
+    void CheeseKeeper::dfs(cheese::Cheese &cheese, int current) {
+        cheese.cheeseBalls[current].visited = true;
+        for (int conn : cheese.cheeseBalls[current].connections) {
+            if (!cheese.cheeseBalls[conn].visited) this->dfs(cheese, conn);
         }
     }
 
-    bool CheeseKeeper::connectivityCheck(std::shared_ptr<cheese::Cheese> cheese) {
-        for (const auto &cheeseball: cheese->cheeseBalls) {
-            if (cheeseball->index != -1) {
-                this->dfs(cheese, cheeseball->index);
+    bool CheeseKeeper::connectivityCheck(cheese::Cheese &cheese) {
+        for (const auto &cheeseball: cheese.cheeseBalls) {
+            if (cheeseball.index != -1) {
+                this->dfs(cheese, cheeseball.index);
                 break;
             }
         }
        
-       for (const auto &cheeseball: cheese->cheeseBalls) {
-            if (cheeseball->visited == false) {
+       for (const auto &cheeseball: cheese.cheeseBalls) {
+            if (cheeseball.visited == false) {
                 return false;
             }
         }
         return true;
     }
 
-    void CheeseKeeper::obliterateCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball){
-        cheeseball->index = -1;
+    void CheeseKeeper::obliterateCheeseBall(cheese::CheeseBall &cheeseball){
+        cheeseball.index = -1;
         // :))
     }
 
     template <int BITSET_SIZE>
-    void CheeseKeeper::carveTheCheese(cheese::Cheese cheese, std::bitset<BITSET_SIZE> mask) {
+    void CheeseKeeper::carveTheCheese(cheese::Cheese &cheese, std::bitset<BITSET_SIZE> mask) {
         for (size_t i=0; i<mask.size(); i++) {
             if (!mask[i]) this->obliterateCheeseBall(cheese.cheeseBalls[i]);
         }
     }
 
-    template void CheeseKeeper::carveTheCheese<8>(cheese::Cheese cheese, std::bitset<8> mask);
+    template void CheeseKeeper::carveTheCheese<8>(cheese::Cheese &cheese, std::bitset<8> mask);
 }
