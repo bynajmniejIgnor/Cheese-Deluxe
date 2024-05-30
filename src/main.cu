@@ -3,7 +3,7 @@
 #define CHEESEBALLS 16 
 
 int main(){
-    cheese::Cheese cheese = cheese::MakeCheese(2,2,2);
+    cheese::Cheese cheese = cheese::MakeCheese(2,4,2);
     auto cheesePtr = std::make_shared<cheese::Cheese>(cheese);
     std::shared_ptr<cheeseOps::CheeseKeeper> keeper = cheeseOps::EducateCheeseKeeper(cheesePtr);
 
@@ -12,8 +12,6 @@ int main(){
 
     int maxHoles = -1;
     int progress = 0;
-    int c;
-    std::cin>>c;
     std::bitset<CHEESEBALLS> mostHolesomeCheese; 
 
     #pragma omp parallel for reduction(max:maxHoles)

@@ -92,16 +92,10 @@ namespace cheese
         for (int h = 0; h < this->height; h ++) {
             for (int i = 0; i < this->sliceArea; i++ ) {
                 if (i+this->sliceArea*(h-1) >= 0 && i+this->sliceArea*(h-1) < this->width*this->length*this->height) {
-for (const auto &c: this->cheeseBalls[i+this->sliceArea*(h-1)].connections) {
-                    this->cheeseBalls[i + this->sliceArea * h].connections.push_back(c + this->sliceArea);
+                    for (const auto &c: this->cheeseBalls[i+this->sliceArea*(h-1)].connections) {
+                        this->cheeseBalls[i + this->sliceArea * h].connections.push_back(c + this->sliceArea);
+                    }
                 }
-
-                }
-                
-                /*
-                for (int c = 0; c < i + this->sliceArea * (h - 1); c ++){
-                    this->cheeseBalls[i + this->sliceArea * h].connections.push_back(c + this->sliceArea);
-                } */
             }
         }
     }
