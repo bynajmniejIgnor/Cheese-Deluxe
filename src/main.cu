@@ -14,6 +14,7 @@ int main(){
     int progress = 0;
     std::bitset<CHEESEBALLS> mostHolesomeCheese; 
 
+    auto start = std::chrono::high_resolution_clock::now();
     #pragma omp parallel for reduction(max:maxHoles)
     for (const auto &holeset: allTheCheeses) {
         cheese::Cheese cheeseCopy = cheese;
@@ -36,11 +37,15 @@ int main(){
             } 
         }
     }
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
     std::cout<<std::endl;
+    std::cout<<std::endl;
+    std::cout << "Openmp took " << duration.count() << " milliseconds to find the solution" << std::endl;
+
     keeper->carveTheCheese<CHEESEBALLS>(cheese, mostHolesomeCheese);
-    if (keeper->verifyCheese(cheese, 3, 5, 2, true)) std::cout<<"One of optimal cheeses is "<<mostHolesomeCheese.to_string()<<", number of holes: "<<CHEESEBALLS-mostHolesomeCheese.count()<<std::endl;
-    cheese.info();
+    if (keeper->verifyCheese(cheese, 3, 5, 2, false)) std::cout<<"One of optimal cheeses is "<<mostHolesomeCheese.to_string()<<", number of holes: "<<CHEESEBALLS-mostHolesomeCheese.count()<<" out of "<<CHEESEBALLS<<" cheeseballs"<<std::endl;
     
     return 0;
 }

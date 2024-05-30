@@ -58,8 +58,6 @@ namespace cheese
         cheese.solidifyCheese();
         cheese.ageTheCheese();
 
-        cheese.info();
-
         return cheese;
     }
 
