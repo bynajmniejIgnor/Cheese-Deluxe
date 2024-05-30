@@ -90,7 +90,7 @@ namespace cheeseOps {
         if(cheeseball->connections.size() == 2) {
             int hook = this->getConnectedCheeseBall(cheeseball, -1);
             int other_hook = this->getConnectedCheeseBall(cheeseball, hook);
-            return cheese->cheeseBalls[hook].connections.size()-1 >= C3 || cheese->cheeseBalls[other_hook].connections.size()-1 >= C3;
+            if (hook != -1 && other_hook != -1) return cheese->cheeseBalls[hook].connections.size()-1 >= C3 || cheese->cheeseBalls[other_hook].connections.size()-1 >= C3;
         }
         return false;
     }
@@ -109,7 +109,7 @@ namespace cheeseOps {
     void CheeseKeeper::dfs(cheese::Cheese &cheese, int current) {
         cheese.cheeseBalls[current].visited = true;
         for (int conn : cheese.cheeseBalls[current].connections) {
-            if (!cheese.cheeseBalls[conn].visited) this->dfs(cheese, conn);
+            if (!cheese.cheeseBalls[conn].visited && cheese.cheeseBalls[conn].index != -1) this->dfs(cheese, conn);
         }
     }
 
@@ -122,7 +122,7 @@ namespace cheeseOps {
         }
        
        for (const auto &cheeseball: cheese.cheeseBalls) {
-            if (cheeseball.visited == false) {
+            if (cheeseball.visited == false && cheeseball.index != -1) {
                 return false;
             }
         }
