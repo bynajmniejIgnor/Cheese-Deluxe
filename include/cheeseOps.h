@@ -24,6 +24,8 @@ namespace cheeseOps {
         bool condition3(std::shared_ptr<cheese::CheeseBall> cheeseball, std::shared_ptr<cheese::Cheese> cheese, size_t C3);
 
         void obliterateCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball);
+
+        template <int BITSET_SIZE>
         void carveTheCheese(std::shared_ptr<cheese::Cheese> cheese, std::bitset<BITSET_SIZE> mask);
     } CheeseKeeper;
 

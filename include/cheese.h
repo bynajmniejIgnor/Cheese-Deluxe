@@ -1,10 +1,7 @@
 #ifndef CHEESE_H
 #define CHEESE_H
 
-#include <vector>
-#include <array>
-#include <memory>
-#include <iostream>
+#include "main.h"
 
 namespace cheese {
     typedef struct {

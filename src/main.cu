@@ -12,6 +12,11 @@ int main(){
         else std::cout<<"CheeseBall "<<cheeseball->index<<" is not valid :(("<<std::endl; 
     }
     */
+    int n;
+    std::cout << "Enter the number of binary digits (n): ";
+    std::cin >> n;
+    auto allTheCheeses = cuda::cheesenerate<32>(n);
 
-    cuda::generate();
+    std::cout<<"Highest number generated: " << allTheCheeses[allTheCheeses.size()-1].to_string() <<std::endl;
+    return 0;
 }
