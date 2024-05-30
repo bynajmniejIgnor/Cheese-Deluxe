@@ -26,7 +26,7 @@ namespace cheeseOps {
         void obliterateCheeseBall(std::shared_ptr<cheese::CheeseBall> cheeseball);
 
         template <int BITSET_SIZE>
-        void carveTheCheese(std::shared_ptr<cheese::Cheese> cheese, std::bitset<BITSET_SIZE> mask);
+        void carveTheCheese(cheese::Cheese cheese, std::bitset<BITSET_SIZE> mask);
     } CheeseKeeper;
 
     std::shared_ptr<CheeseKeeper> EducateCheeseKeeper(std::shared_ptr<cheese::Cheese> cheese);

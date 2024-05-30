@@ -29,7 +29,7 @@ namespace cheese {
         void ageTheCheese();
     } Cheese;
 
-    std::shared_ptr<Cheese> MakeCheese(int width, int length, int height);
+    Cheese MakeCheese(int width, int length, int height);
 }
 
 #endif

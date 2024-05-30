@@ -128,11 +128,12 @@ namespace cheeseOps {
         // :))
     }
 
-
     template <int BITSET_SIZE>
-    void CheeseKeeper::carveTheCheese(std::shared_ptr<cheese::Cheese> cheese, std::bitset<BITSET_SIZE> mask) {
+    void CheeseKeeper::carveTheCheese(cheese::Cheese cheese, std::bitset<BITSET_SIZE> mask) {
         for (size_t i=0; i<mask.size(); i++) {
-            if (!mask[i]) this->obliterateCheeseBall(cheese->cheeseBalls[i]);
+            if (!mask[i]) this->obliterateCheeseBall(cheese.cheeseBalls[i]);
         }
     }
+
+    template void CheeseKeeper::carveTheCheese<8>(cheese::Cheese cheese, std::bitset<8> mask);
 }

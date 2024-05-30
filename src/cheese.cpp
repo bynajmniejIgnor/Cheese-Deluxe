@@ -24,12 +24,12 @@ namespace cheese
         std::cout << "Visited: " << this->visited << std::endl;
     }
 
-    std::shared_ptr<Cheese> MakeCheese(int width, int length, int height) {
-        auto cheese = std::make_shared<Cheese>();
-        cheese->width = width;
-        cheese->length = length;
-        cheese->height = height; 
-        cheese->sliceArea = width * length;
+    Cheese MakeCheese(int width, int length, int height) {
+        Cheese cheese;
+        cheese.width = width;
+        cheese.length = length;
+        cheese.height = height; 
+        cheese.sliceArea = width * length;
 
         std::vector<std::shared_ptr<CheeseBall>> cheeseBalls;
         std::vector<int> connections;
@@ -52,11 +52,11 @@ namespace cheese
             }
         }
 
-        cheese->cheeseBalls = cheeseBalls;
-        cheese->bindSlices();
-        cheese->stackSlices();
-        cheese->solidifyCheese();
-        cheese->ageTheCheese();
+        cheese.cheeseBalls = cheeseBalls;
+        cheese.bindSlices();
+        cheese.stackSlices();
+        cheese.solidifyCheese();
+        cheese.ageTheCheese();
 
         return cheese;
     }
