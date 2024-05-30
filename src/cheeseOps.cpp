@@ -25,7 +25,7 @@ namespace cheeseOps {
         return keeper;
     }
 
-    bool CheeseKeeper::verifyCheese(cheese::Cheese &cheese, size_t C1, size_t C2, size_t C3, bool verbose) { //Checks for mandatory wall cheeseballs and connectivity (graph theory)
+    bool CheeseKeeper::verifyCheese(cheese::Cheese &cheese, size_t C1, size_t C2, size_t C3, bool verbose) { //Checks for mandatory wall cheeseballs, connectivity (graph theory) and contitions
         std::array<bool, 6> checkMarks;
         checkMarks.fill(false);
         int checkPointer = 0;
@@ -46,7 +46,7 @@ namespace cheeseOps {
 
         for (size_t check=0; check<checkMarks.size(); check++) {
             if (!checkMarks[check]) {
-                std::cout<<"This cheese has failed at least one wall condition ("<<check<<")"<<std::endl;
+                if (verbose) std::cout<<"This cheese has failed at least one wall condition ("<<check<<")"<<std::endl;
                 return false;
             }       
         }
@@ -142,4 +142,6 @@ namespace cheeseOps {
     }
 
     template void CheeseKeeper::carveTheCheese<8>(cheese::Cheese &cheese, std::bitset<8> mask);
+    template void CheeseKeeper::carveTheCheese<16>(cheese::Cheese &cheese, std::bitset<16> mask);
+    template void CheeseKeeper::carveTheCheese<32>(cheese::Cheese &cheese, std::bitset<32> mask);
 }

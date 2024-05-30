@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cuda_runtime.h>
+#include <omp.h>
 #include <vector>
 #include <array>
 #include <chrono>

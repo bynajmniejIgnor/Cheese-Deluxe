@@ -35,8 +35,9 @@ namespace cuda {
 
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
-        std::cout << "Time taken: " << duration.count() << " milliseconds" << std::endl;
+        std::cout << "Generated all possible cheeses in: " << duration.count() << " milliseconds" << std::endl;
         std::cout << "Last cheesenerated number is: " << bitsets[maxNumber - 1].to_string() << std::endl;
+        std::cout<<std::endl;
 
         cudaFree(d_results);
         return bitsets;
