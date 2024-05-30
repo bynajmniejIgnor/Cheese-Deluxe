@@ -22,6 +22,13 @@ namespace cheeseOps {
             keeper->wallBounds[TOP].push_back(i+cheese->sliceArea*(cheese->height-1));
         } 
 
+        for (size_t i = 0; i < keeper->wallBounds.size(); ++i) {
+            std::cout << "Wall: " << i << ": ";
+            for (size_t j = 0; j < keeper->wallBounds[i].size(); ++j) {
+                std::cout << keeper->wallBounds[i][j] << " ";
+            }
+        std::cout << std::endl;
+    }
         return keeper;
     }
 
@@ -143,5 +150,6 @@ namespace cheeseOps {
 
     template void CheeseKeeper::carveTheCheese<8>(cheese::Cheese &cheese, std::bitset<8> mask);
     template void CheeseKeeper::carveTheCheese<16>(cheese::Cheese &cheese, std::bitset<16> mask);
+    template void CheeseKeeper::carveTheCheese<27>(cheese::Cheese &cheese, std::bitset<27> mask);
     template void CheeseKeeper::carveTheCheese<32>(cheese::Cheese &cheese, std::bitset<32> mask);
 }

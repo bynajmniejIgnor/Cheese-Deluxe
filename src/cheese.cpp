@@ -54,6 +54,7 @@ namespace cheese
 
         cheese.cheeseBalls = cheeseBalls;
         cheese.bindSlices();
+        cheese.info();
         cheese.stackSlices();
         cheese.solidifyCheese();
         cheese.ageTheCheese();

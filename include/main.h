@@ -10,6 +10,4 @@
 #include <bitset>
 #include <memory>
 
-//#define BITSET_SIZE 32
-
 #endif
