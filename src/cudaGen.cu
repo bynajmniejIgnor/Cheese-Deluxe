@@ -45,6 +45,7 @@ namespace cuda {
 
     template std::vector<std::bitset<8>> cheesenerate<8>(int n);
     template std::vector<std::bitset<16>> cheesenerate<16>(int n);
+    template std::vector<std::bitset<24>> cheesenerate<24>(int n);
     template std::vector<std::bitset<27>> cheesenerate<27>(int n);
     template std::vector<std::bitset<32>> cheesenerate<32>(int n);
 }
