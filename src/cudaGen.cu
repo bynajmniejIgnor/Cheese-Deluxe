@@ -11,11 +11,6 @@ namespace cuda {
 
     template <int BITSET_SIZE>
     std::vector<std::bitset<BITSET_SIZE>> cheesenerate(int n) {
-        if (n > BITSET_SIZE) {
-            std::cerr << "Error: n must be less than or equal to " << BITSET_SIZE << std::endl;
-            exit(1);
-        }
-
         int maxNumber = (1 << n); // 2^n
         std::vector<std::bitset<BITSET_SIZE>> bitsets(maxNumber);
 
